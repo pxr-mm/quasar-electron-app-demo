@@ -10,6 +10,11 @@ const { configure } = require('quasar/wrappers');
 
 module.exports = configure(function (ctx) {
   return {
+    pluginOptions:{
+      electronBuilder:{
+        nodeIntegration:true
+      }
+    },
     // https://v2.quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
 
@@ -32,7 +37,7 @@ module.exports = configure(function (ctx) {
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
       // 'ionicons-v4',
-      // 'mdi-v5',
+      'mdi-v5', //窗口最大最小化等图标库
       // 'fontawesome-v5',
       // 'eva-icons',
       // 'themify',
@@ -46,6 +51,29 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
+      extendWebpack(cfg) { //配置在vue页面中可以import 导入electron api
+        cfg.externals = {
+          'electron': 'require("electron")'
+        }
+      //   // for i18n resources (json/json5/yaml)
+      //   cfg.module.rules.push({
+      //     test: /\.(json5?|ya?ml)$/, // target json, json5, yaml and yml files
+      //     type: 'javascript/auto',
+      //     // Use `Rule.include` to specify the files of locale messages to be pre-compiled
+      //     include: [
+      //       path.resolve(__dirname, './src/i18n'),
+      //     ],
+      //     loader: '@intlify/vue-i18n-loader'
+      //   })
+      //
+      //   // for i18n custom block
+      //   cfg.module.rules.push({
+      //     resourceQuery: /blockType=i18n/,
+      //     type: 'javascript/auto',
+      //     loader: '@intlify/vue-i18n-loader'
+      //   })
+      },
+
 
       // transpile: false,
 

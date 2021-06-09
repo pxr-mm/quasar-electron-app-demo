@@ -9,13 +9,14 @@ yarn
 
 ### Start the app in development mode (hot-code reloading, error reporting, etc.)
 ```bash
-quasar dev
+quasar dev -m electron
 ```
 
 
 ### Build the app for production
 ```bash
-quasar build
+quasar build -m electron -A x64
+quasar build -m electron -P always
 ```
 
 ### Customize the configuration
