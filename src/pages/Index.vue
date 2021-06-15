@@ -12,6 +12,7 @@
     </div>
     <q-btn @click="water">浇水</q-btn>
     {{ number }}
+    <div>请求用户信息：{{user}}</div>
     <q-footer>
       <q-toolbar class="bg-grey-3 text-black row">
         <q-btn round flat icon="insert_emoticon" class="q-mr-sm"/>
@@ -25,14 +26,15 @@
 
 <script>
 import {defineComponent} from 'vue';
-
+import axios from 'axios'
 export default defineComponent({
   name: 'PageIndex',
   data() {
     return {
       isshow: true,
       number: 0,
-      message: ''
+      message: '',
+      user:{},
     }
   },
   setup() {
@@ -43,12 +45,21 @@ export default defineComponent({
     // }
     // return {isshow, water }
   },
+  mounted() {
+    this.toLogin()
+  },
   methods: {
     water() {
       console.log('浇水')
       this.isshow = !this.isshow
       this.number++
       console.log('number', this.number);
+    },
+   toLogin() {
+      axios.post('http://localhost:4567/user_login',{user_name:'admin',user_password:'123456'}).then(res =>{
+        this.user = res.data
+        console.log(this.user,'user')
+      })
     }
   }
 })

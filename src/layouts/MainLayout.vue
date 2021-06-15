@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh lpR lFf">
+  <q-layout view="hHh lpR fFf">
     <q-header elevated class="text-black">
       <q-toolbar  style="backdrop-filter: blur(7px);background-color: rgba(0,0,0,.1);position: fixed;">
         <q-btn
@@ -33,9 +33,11 @@
     <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
+      side="left"
       bordered
       class="bg-grey-1"
       style="padding-top: 50px;overflow-y: hidden"
+      :mini="miniState"
     >
 
       <q-scroll-area class="full-height" style="overflow-y: hidden">
@@ -113,10 +115,11 @@ export default defineComponent({
   },
 
   mounted() {
-    console.log('aaa',ipcRenderer)
+    // console.log('aaa',ipcRenderer)
     // 接收主进程回应
     ipcRenderer.on('window_state',(event,args) =>{
       console.log(args,"主进程回应")
+      this.isMaxWinState = args
     })
   },
   methods: {
@@ -125,13 +128,12 @@ export default defineComponent({
       ipcRenderer.send("window-min",'min')
     },
     maxWindow() {
-
-      if(this.isMaxWinState){
-        ipcRenderer.send('window-unmax','max')
-      } else {
+      // if(this.isMaxWinState){
+      //   ipcRenderer.send('window-unmax','max')
+      // } else {
         ipcRenderer.send('window-max','max')
-      }
-      this.isMaxWinState = !this.isMaxWinState
+      // }
+      // this.isMaxWinState = !this.isMaxWinState
 
     },
     closeWindow() {
@@ -140,12 +142,15 @@ export default defineComponent({
   },
   setup () {
     const leftDrawerOpen = ref(false)
-
+    const miniState = ref(false)
     return {
-      essentialLinks: linksList,
+      // essentialLinks: linksList,
       leftDrawerOpen,
+      miniState,
       toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
+        // leftDrawerOpen.value = !leftDrawerOpen.value
+        miniState.value = !miniState.value
+
       }
     }
   }
